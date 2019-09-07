@@ -1,7 +1,11 @@
 {
-  "name": "wardrobe-planner",
+  "name": "tumnus",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beauremus/tumnus.git"
+  },
   "dependencies": {
     "@types/jest": "24.0.18",
     "@types/node": "12.7.4",
