@@ -17,7 +17,7 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './components/Sidebar';
+import { mainListItems, secondaryListItems } from '../Sidebar';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -26,8 +26,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://tumnus.com/">
-        Tumnus Wardrobe
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -59,16 +59,12 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth-48}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
   },
   menuButton: {
     marginRight: 36,
@@ -118,14 +114,11 @@ const useStyles = makeStyles(theme => ({
   fixedHeight: {
     height: 240,
   },
-  hide: {
-    display: 'none',
-  },
 }));
 
-export default function App() {
+export default function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -137,15 +130,9 @@ export default function App() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-      {/* <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}> */}
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
-          {/* <IconButton
+          <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
@@ -153,35 +140,24 @@ export default function App() {
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
-          </IconButton> */}
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap>
-            Tumnus Wardrobe
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Dashboard
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={3} color="secondary">
+            <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
-        // className={classes.drawer}
-        variant="persistent"
-        anchor="left"
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
         open={open}
-        // classes={{
-        //   paper: classes.drawerPaper,
-        // }}
-        >
+      >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
@@ -197,27 +173,15 @@ export default function App() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
-            <Grid item xs={12}>
+            <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 {/* <Chart /> */}
-                <input type="file" name="imageInput" id="imageInput" onChange={e => {
-                  e.persist()
-                  const fileInput = e.target as HTMLInputElement
-                  const file = fileInput.files && fileInput.files[0]
-                  if (!file) return
-                  console.log(file)
-                  const reader = new FileReader()
-                  reader.onload = (event) => {
-                      const img = new Image();
-                      img.onload = () => {
-                          canvas.width = img.width;
-                          canvas.height = img.height;
-                          ctx.drawImage(img,0,0);
-                      }
-                      img.src = event.target.result;
-                  }
-                  reader.readAsDataURL(e.target!.files[0]);
-                }}/>
+              </Paper>
+            </Grid>
+            {/* Recent Deposits */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                {/* <Deposits /> */}
               </Paper>
             </Grid>
             {/* Recent Orders */}
